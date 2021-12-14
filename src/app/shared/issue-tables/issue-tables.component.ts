@@ -159,7 +159,8 @@ export class IssueTablesComponent implements OnInit, AfterViewInit {
     event.stopPropagation();
 
     let snackBarRef = null;
-    snackBarRef = this.snackBar.openFromComponent(UndoActionComponent, {data: {message:`Deleted issue ${id}`}, duration: this.snackBarAutoCloseTime});
+    snackBarRef = this.snackBar.openFromComponent(UndoActionComponent, 
+      {data: {message: `Deleted issue ${id}`}, duration: this.snackBarAutoCloseTime});
     snackBarRef.onAction().subscribe(
       () => {
         this.undeleteIssue(id);
