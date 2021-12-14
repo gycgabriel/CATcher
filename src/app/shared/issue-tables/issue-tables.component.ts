@@ -60,7 +60,7 @@ export class IssueTablesComponent implements OnInit, AfterViewInit {
     private errorHandlingService: ErrorHandlingService,
     private loggingService: LoggingService,
     private dialogService: DialogService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar = null
   ) {}
 
   ngOnInit() {
