@@ -51,7 +51,7 @@ export class IssueTablesComponent implements OnInit, AfterViewInit {
               private phaseService: PhaseService,
               private errorHandlingService: ErrorHandlingService,
               private loggingService: LoggingService,
-              private snackBar: MatSnackBar) { }
+              private snackBar: MatSnackBar = null) { }
 
   ngOnInit() {
     this.issues = new IssuesDataTable(this.issueService, this.errorHandlingService, this.sort,
