@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 import { FormDisableControlDirective } from '../core/directives/form-disable-control.directive';
 import { ErrorToasterModule } from './error-toasters/error-toaster.module';
 import { MaterialModule } from './material.module';
+import { ActionToasterModule } from './action-toasters/action-toasters.module';
 
 @NgModule({
   imports: [CommonModule, FormsModule, ReactiveFormsModule, HttpClientModule, RouterModule, MaterialModule, ErrorToasterModule],
@@ -18,7 +19,8 @@ import { MaterialModule } from './material.module';
     HttpClientModule,
     RouterModule,
     MaterialModule,
-    ErrorToasterModule
+    ErrorToasterModule,
+    ActionToasterModule
   ]
 })
 export class SharedModule {}

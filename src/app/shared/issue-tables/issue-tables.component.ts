@@ -1,6 +1,8 @@
 import { AfterViewInit, Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatSort } from '@angular/material';
 import { finalize } from 'rxjs/operators';
+import { MatSnackBar, MatSnackBarRef } from '@angular/material';
+import { UndoActionComponent } from '../../shared/action-toasters/undo-action/undo-action.component';
 import { Issue, STATUS } from '../../core/models/issue.model';
 import { DialogService } from '../../core/services/dialog.service';
 import { ErrorHandlingService } from '../../core/services/error-handling.service';
@@ -28,6 +30,9 @@ export enum ACTION_BUTTONS {
   styleUrls: ['./issue-tables.component.css']
 })
 export class IssueTablesComponent implements OnInit, AfterViewInit {
+
+  snackBarAutoCloseTime = 3000;
+
   @Input() headers: string[];
   @Input() actions: ACTION_BUTTONS[];
   @Input() filters?: any = undefined;
@@ -54,7 +59,8 @@ export class IssueTablesComponent implements OnInit, AfterViewInit {
     private phaseService: PhaseService,
     private errorHandlingService: ErrorHandlingService,
     private loggingService: LoggingService,
-    private dialogService: DialogService
+    private dialogService: DialogService,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit() {
@@ -175,6 +181,25 @@ export class IssueTablesComponent implements OnInit, AfterViewInit {
         }
       );
     event.stopPropagation();
+
+    let snackBarRef = null;
+    snackBarRef = this.snackBar.openFromComponent(UndoActionComponent, {data: {message:`Deleted issue ${id}`}, duration: this.snackBarAutoCloseTime});
+    snackBarRef.onAction().subscribe(
+      () => {
+        this.undeleteIssue(id);
+      }
+    );
+  }
+
+  undeleteIssue(id: number) {
+    this.loggingService.info(`IssueTablesComponent: Undeleting Issue ${id}`);
+    this.issueService.undeleteIssue(id).subscribe((reopenedIssue) => {
+    }, (error) => {
+      this.errorHandlingService.handleError(error);
+    });
+    event.stopPropagation();
+
+    this.snackBar.open(`Restored issue ${id}`, "", {duration: this.snackBarAutoCloseTime});
   }
 
   openDeleteDialog(id: number, event: Event) {
