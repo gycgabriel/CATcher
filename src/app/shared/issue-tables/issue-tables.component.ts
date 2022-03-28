@@ -1,7 +1,6 @@
 import { AfterViewInit, Component, Input, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator, MatSort } from '@angular/material';
+import { MatPaginator, MatSnackBar, MatSort } from '@angular/material';
 import { finalize } from 'rxjs/operators';
-import { MatSnackBar } from '@angular/material';
 import { Issue, STATUS } from '../../core/models/issue.model';
 import { DialogService } from '../../core/services/dialog.service';
 import { ErrorHandlingService } from '../../core/services/error-handling.service';
@@ -187,11 +186,11 @@ export class IssueTablesComponent implements OnInit, AfterViewInit {
       duration: this.snackBarAutoCloseTime
     });
     snackBarRef.onAction().subscribe(() => {
-      this.undeleteIssue(id);
+      this.undeleteIssue(id, event);
     });
   }
 
-  undeleteIssue(id: number) {
+  undeleteIssue(id: number, event: Event) {
     this.loggingService.info(`IssueTablesComponent: Undeleting Issue ${id}`);
     this.issueService.undeleteIssue(id).subscribe(
       (reopenedIssue) => {},
